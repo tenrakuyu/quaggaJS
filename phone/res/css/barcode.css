@@ -1,10 +1,13 @@
-#camera-switch {
-    background-color: aqua;
-    width: 50px;
-    height: 30px;
+body {
+    background-color: #222222;
+}
+
+#camera-switch, #switch-icon {
+    width: 40px;
+    height: 40px;
     position: fixed;
-    left: 20px;
-    top:400px;
+    right: 40px;
+    bottom: 40px;
 }
 
 #scan {
@@ -14,3 +17,18 @@
     float: left;
 }
 
+#interactive {
+    float: left;
+    width: 320px;
+    height: 320px;
+}
+
+#interactive.viewport, canvas, video {
+    float: left;
+    width: 320px;
+    height: 320px;
+}
+
+#interactive.viewport, canvas.drawingBuffer, video.drawingBuffer {
+    margin-left: -320px;
+}

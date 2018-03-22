@@ -5,23 +5,22 @@ $(function () {
             inputStream: {
                 name: "Live",
                 type: "LiveStream",
-                target: document.querySelector('#scan-barcode'),
+                target: document.querySelector('#interactive'),
                 constraints: {
                     width: {
-                        min: 0,
-                        max: 400
+                        min: 600,
+                        max: 1080
                     },
                     height: {
-                        min: 0,
-                        max: 400
+                        min: 600,
+                        max: 1080
                     },
-                    facingMode: "environment",
                     deviceId: camera_list[cameraIndex],
                     aspectRatio: {
                         min: 1,
                         max: 2
                     }
-                }, // todo 需要调整扫描区域大小
+                },
                 locator: {
                     patchSize: "medium",
                     halfSample: true
@@ -57,7 +56,12 @@ $(function () {
     startDetect = function () {
         document.getElementById("scan").style.display = "none";
 
-        document.getElementById("scan-barcode").style.display = null;
+        // let interactive = document.getElementById("interactive");
+        // interactive.style.position = 'relative';
+        // interactive.style.left = (document.body.offsetWidth - interactive.clientWidth) / 2 + 'px';
+        // interactive.style.top = (interactive.offsetHeight - document.body.offsetTop) / 2 + 'px';
+
+        document.getElementById("interactive").style.display = null;
         document.getElementById("camera-switch").style.display = null;
         initCamera();
     };
@@ -65,7 +69,7 @@ $(function () {
     stopDetect = function () {
 
         Quagga.stop();
-        document.getElementById("scan-barcode").style.display = "none";
+        document.getElementById("interactive").style.display = "none";
         document.getElementById("camera-switch").style.display = "none";
 
         document.getElementById("scan").style.display = null;
@@ -96,9 +100,11 @@ $(function () {
 
         navigator.mediaDevices.enumerateDevices()
             .then(function (devices) {
+                // document.getElementById("device-list").textContent = JSON.stringify(devices);
                 devices.forEach(function (device) {
-                    if (device.kind == "videoinput") {
+                    if (device.kind === "videoinput") {
                         c_list.push(device.deviceId);
+                        // document.getElementById("device-list").textContent = document.getElementById("device-list").textContent + " id: " + device.deviceId
                     }
                 });
             })
@@ -139,5 +145,6 @@ $(function () {
     });
 
     startDetect();
+
     // TODO 支持花名输入和整个界面
 });
