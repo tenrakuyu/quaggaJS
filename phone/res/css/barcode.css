@@ -1,4 +1,10 @@
 body {
+    /*display: none;*/
+}
+
+#load-holder {
+    width: 300px;
+    height: 1080px;
 }
 
 #camera-switch, #switch-icon {
@@ -32,7 +38,83 @@ body {
     margin-left: -320px;
 }
 
-#user-icon, #name{
+#user-icon, #name {
     float: left;
     height: 20px;
+}
+
+#name {
+    text-decoration: underline;
+}
+
+#asset-title, #asset-barcode, #input-container, #confirm, #re-scan {
+    margin: auto;
+    text-align: center;
+}
+
+#asset-title {
+    padding-top: 120px;
+    font-size: xx-large;
+}
+
+#asset-barcode {
+    font-size: large;
+}
+
+#input-container {
+    overflow: hidden
+}
+
+#input-name, #confirm, #re-scan {
+    font-size: large;
+}
+
+#input-name {
+    margin: 5px;
+    width: 180px;
+    height: 25px;
+    border: solid #cccccc 1px;
+    overflow: hidden
+}
+
+#confirm, #re-scan {
+    width: 186px;
+    height: 30px;
+    color: #ffffff;
+}
+
+#confirm {
+    background: limegreen;
+}
+
+#re-scan {
+
+    background: deeppink;
+}
+
+#ret-container {
+    padding-top: 150px;
+    margin: auto;
+    text-align: center;
+}
+
+#ret-img {
+    width: 180px;
+    padding-bottom: 10px;
+}
+
+#ret-msg {
+    font-size: xx-large;
+}
+
+#scan-hint {
+    font-size: large;
+}
+
+#scan-holder {
+    position: fixed;
+    top: 50px;
+    width: 300px;
+    height: 480px;
+    z-index: 999;
 }

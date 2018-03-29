@@ -1,5 +1,7 @@
-let startTime;
-let name;
+let startTime = 0;
+let name = "";
+let barcode = "";
+let success_flag = true;
 
 initCamera = function () {
     Quagga.init({
@@ -51,27 +53,60 @@ initCamera = function () {
     });
 };
 
-let startDetect = function () {
-    startTime = (new Date()).getTime();
+setScanPage = function () {
+    document.body.style.backgroundColor = "#333333";
+    document.getElementById("login-user").style.display = "none";
+    document.getElementById("scan-container").style.display = null;
+    document.getElementById("login-container").style.display = "none";
+    document.getElementById("ret-container").style.display = "none";
+    document.getElementById("scan-holder").style.display = "none";
+};
 
-    document.getElementById("ret-barcode").textContent = "";
+setLoginPage = function () {
+    document.body.style.backgroundColor = "#ffffff";
+    document.getElementById("login-user").style.display = "none";
+    document.getElementById("scan-container").style.display = "none";
+    document.getElementById("login-container").style.display = null;
+    document.getElementById("ret-container").style.display = "none";
     document.getElementById("scan-holder").style.display = "none";
 
-    document.getElementById("interactive").style.display = null;
-    document.getElementById("camera-switch").style.display = null;
+};
+
+setLoadingPage = function () {
+// todo
+};
+
+setRetPage = function () {
+    document.body.style.backgroundColor = "#ffffff";
+    document.getElementById("login-user").style.display = null;
+    document.getElementById("scan-container").style.display = "none";
+    document.getElementById("login-container").style.display = "none";
+    document.getElementById("ret-container").style.display = null;
+    document.getElementById("scan-holder").style.display = null;
+};
+
+let startDetect = function () {
+    setScanPage();
+    startTime = (new Date()).getTime();
+
+    // document.getElementById("ret-barcode").textContent = "";
+    // document.getElementById("scan-holder").style.display = "none";
+    //
+    // document.getElementById("interactive").style.display = null;
+    // document.getElementById("camera-switch").style.display = null;
     initCamera();
 };
 
 let stopDetect = function () {
 
     Quagga.stop();
-    document.getElementById("interactive").style.display = "none";
-    document.getElementById("camera-switch").style.display = "none";
-
-    document.getElementById("scan-holder").style.display = null;
+    // document.getElementById("interactive").style.display = "none";
+    // document.getElementById("camera-switch").style.display = "none";
+    //
+    // document.getElementById("scan-holder").style.display = null;
 };
 
-let checkBarcode = function (barcode) {
+let checkBarcode = function () {
     if (typeof barcode !== "string") {
         return false;
     }
@@ -129,28 +164,47 @@ let getCookie = function (cname) {
 };
 
 let checkName = function () {
-    if (getCookie("name") === "") {
-        name = "tianle";
-        setCookie("name", name, "365");
-        document.getElementById("name").textContent = name;
-    }
+    // if (getCookie("name") === "") {
+    //     name = "tianle";
+    //     setCookie("name", name, "365");
+    //     document.getElementById("name").textContent = name;
+    // }
+
+    return getCookie("name") === "" ? false : true;
 };
 
-let saveBorrowStatus = function (barcode) {
-    document.getElementById("barcode").textContent = barcode;
+let changeName = function () {
+    // todo 要为修改用户名单独做一个按钮和setpage
+    setLoginPage();
 };
+
+let saveBorrowStatus = function () {
+    if (document.getElementById("input-name").value !== "") {
+        name = document.getElementById("input-name").value;
+        setCookie("name", name, 365);
+        document.getElementById("name").textContent = name;
+    }
+    setRetPage();
+    document.getElementById("ret-msg").textContent = "借用成功";
+    document.getElementById("ret-img").src = "res/drawable/success.png";
+};
+
 
 let camera_list = getCameras();
 let cameraIndex = 0;
 
 Quagga.onDetected(function (data) {
     setLoginPage();
-    let barcode = data.codeResult.code;
+    barcode = data.codeResult.code;
     if (checkBarcode(barcode)) {
         stopDetect();
-        checkName();
-        // todo save borrow status
-        saveBorrowStatus(barcode);
+        document.getElementById("asset-barcode").textContent = barcode;
+        if (checkName()) {
+            saveBorrowStatus();
+            setRetPage();
+        } else {
+            setLoginPage();
+        }
     }
     else {
         // continue detecting
@@ -165,44 +219,13 @@ Quagga.onProcessed(function () {
     }
 });
 
-setScanPage = function () {
-    document.body.style.backgroundColor = "#333333";
-    document.getElementById("login-user").style.display = "none";
-    document.getElementById("scan-container").style.display = null;
-    document.getElementById("login-container").style.display = "none";
-    document.getElementById("ret-container").style.display = "none";
-    document.getElementById("scan-holder").style.display = "none";
-};
-
-setLoginPage = function () {
-    document.body.style.backgroundColor = "#ffffff";
-    document.getElementById("login-user").style.display = null;
-    document.getElementById("scan-container").style.display = "none";
-    document.getElementById("login-container").style.display = null;
-    document.getElementById("ret-container").style.display = "none";
-    document.getElementById("scan-holder").style.display = "none";
-
-};
-
-setRetPage = function () {
-    document.body.style.backgroundColor = "#ffffff";
-    document.getElementById("login-user").style.display = "none";
-    document.getElementById("scan-container").style.display = "none";
-    document.getElementById("login-container").style.display = "none";
-    document.getElementById("ret-container").style.display = null;
-    document.getElementById("scan-holder").style.display = null;
-};
 
 $(function () {
 
-    setScanPage();
+    document.getElementById("load-holder").style.display = "none";
 
     name = getCookie("name");
     document.getElementById("name").textContent = (name === "") ? "未登录" : name;
-
-    document.getElementById("scan-holder").addEventListener('click', function () {
-        startDetect();
-    });
 
     document.getElementById("camera-switch").addEventListener('click', function () {
         if (cameraIndex < camera_list.length - 1) {
@@ -214,5 +237,11 @@ $(function () {
         startDetect();
     });
 
+    document.getElementById("confirm").addEventListener('click', saveBorrowStatus);
+
+    document.getElementById("re-scan").addEventListener('click', startDetect);
+    document.getElementById("scan-holder").addEventListener('click', startDetect);
+
+    document.getElementById("name").addEventListener('click', changeName);
     startDetect();
 });
