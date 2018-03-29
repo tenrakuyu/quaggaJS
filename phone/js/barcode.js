@@ -185,7 +185,7 @@ let saveBorrowStatus = function () {
         document.getElementById("name").textContent = name;
     }
     setRetPage();
-    document.getElementById("ret-msg").textContent = "借用成功";
+    document.getElementById("ret-msg").textContent = barcode + " 借用成功";
     document.getElementById("ret-img").src = "res/drawable/success.png";
 };
 
