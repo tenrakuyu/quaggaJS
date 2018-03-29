@@ -15,13 +15,31 @@
 </head>
 <body>
 
-<div id="interactive"></div>
-<div id="barcode"></div>
-<div id="scan">scan</div>
-<div id="device-list"></div>
-<div id="camera-switch"><img id="switch-icon"
-                             src="https://cdn2.iconfinder.com/data/icons/picons-basic-1/57/basic1-084_rotate_sync-512.png"/>
+<div id="login-user">
+    <img id="user-icon" src="res/drawable/user.png"/>
+    <div id="name">sign in</div>
 </div>
+<div id="scan-container">
+    <div id="interactive"></div>
+    <div id="camera-switch"><img id="switch-icon"
+                                 src="https://cdn2.iconfinder.com/data/icons/picons-basic-1/57/basic1-084_rotate_sync-512.png"/>
+    </div>
+</div>
+<div id="login-container">
+    <div id="asset-container">
+        <div id="asset-title">设备编号</div>
+        <div id="asset-barcode"></div>
+        <textarea id="input-name"></textarea>
+        <div id="confirm"></div>
+    </div>
+</div>
+<div id="ret-container">
+    <img id="ret-img"/>
+    <div id="ret-barcode"></div>
+    <div id="ret-msg"></div>
+    <div id="scan-hint">点击任意位置继续扫描</div>
+</div>
+<div id="scan-holder">scan</div>
 
 
 <script type="text/javascript" src="../example/vendor/jquery-1.9.0.min.js"></script>

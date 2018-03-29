@@ -1,5 +1,4 @@
 body {
-    background-color: #222222;
 }
 
 #camera-switch, #switch-icon {
@@ -31,4 +30,9 @@ body {
 
 #interactive.viewport, canvas.drawingBuffer, video.drawingBuffer {
     margin-left: -320px;
+}
+
+#user-icon, #name{
+    float: left;
+    height: 20px;
 }
